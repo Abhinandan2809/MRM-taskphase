@@ -12,7 +12,7 @@ while capture.isOpened():
  kernel=np.ones((7,7))
  opened=cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
  gaussfiltered=cv2.GaussianBlur(opened,(5,5),0)
- ret,thresh=cv2.threshold(gaussfiltered, 127, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
+ ret,thresh=cv2.threshold(gaussfiltered, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)
  cv2.imshow("Threshold", thresh)
  (contours, hierarchy) = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
  try:
