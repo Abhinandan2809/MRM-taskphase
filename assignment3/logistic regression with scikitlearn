@@ -1,0 +1,17 @@
+import numpy as np
+import pandas as pd
+data=pd.read_csv("/home/abhinandan/Desktop/ex2data1.csv", delimiter=',')
+from sklearn.linear_model import LogisticRegression
+logistic = LogisticRegression()
+x=data[['1','2']]
+y=data['3']
+logistic.fit(x,y)
+predictions=logistic.predict(x)
+from sklearn.metrics import classification_report
+print(classification_report(y,predictions))
+
+
+
+
+
+
