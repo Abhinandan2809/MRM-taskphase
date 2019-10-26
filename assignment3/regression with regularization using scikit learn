@@ -1,0 +1,21 @@
+import numpy as np
+import pandas as pd
+data=pd.read_csv("/home/abhinandan/Desktop/ex2data2.csv", delimiter=',')
+from sklearn.linear_model import LogisticRegression
+logistic = LogisticRegression()
+x=pd.DataFrame()
+k=0
+for i in range(7):
+    for j in range(7-i):
+        new1=data['1']**i
+        new2=data['2']**j
+        new=new1*new2
+        x[k]=new
+        k=k+1
+from sklearn.linear_model import LogisticRegression
+logistic = LogisticRegression()
+y=data['3']
+logistic.fit(x,y)
+predictions=logistic.predict(x)        
+from sklearn.metrics import classification_report
+print(classification_report(y,predictions))
