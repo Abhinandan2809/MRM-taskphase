@@ -1,0 +1,54 @@
+from scipy.io import loadmat
+mat =loadmat('/home/abhinandan/Desktop/ex3data1.mat')
+import numpy as np
+from sklearn.model_selection import train_test_split
+from matplotlib import pyplot as plt
+def sigmoid(z):
+    return (1/(1+np.exp(-z)))
+y=np.array(mat['y'].reshape(5000,1), np.float32)
+for i in range(5000):
+    if y[i]==10:
+        y[i]=0
+x=np.array(mat['X'], np.float32)
+x=np.append(np.ones((5000,1)),x,axis=1)
+yprime=y
+y_train=y
+for j in range(10):
+    y_new=np.zeros((5000,1))
+    for i in range(5000):
+        if yprime[i]==j:
+            y_new[i]=1
+        else:
+            y_new[i]=0
+    y_train=np.append(y_train,y_new,axis=1)
+y_train=np.delete(y_train,0,axis=1)
+print(y_train)
+parameters=np.random.rand(401,10)
+for i in range(15000):
+    predictions=sigmoid(np.dot(x,parameters))    
+    parameters=parameters-(np.dot(x.T,(predictions-y_train))*0.1/5000)
+    print(parameters)
+    
+predictlabel=np.zeros((5000,1))
+predictions=sigmoid(np.dot(x,parameters))
+for i in range(5000):
+  for j in range(10):
+       if predictions[i][j]==np.amax(predictions[i], axis=0):
+                 predictions[i][j]=1
+       else:
+         predictions[i][j]=0
+
+
+  
+for i in range(5000):
+  for j in range(10):
+    if predictions[i][j]==1:
+        predictlabel[i]=j
+difference=predictlabel-y
+print(predictlabel)
+count=0
+for i in range(5000):
+    if difference[i]==0:
+        count+=1
+accuracy=(count/5000)*100
+print(accuracy)
