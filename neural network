@@ -1,0 +1,77 @@
+
+
+from scipy.io import loadmat
+mat =loadmat('/home/abhinandan/Desktop/ex3data1.mat')
+weightmat=loadmat('/home/abhinandan/Desktop/machine-learning-ex3/ex3/ex3weights.mat')
+import numpy as np
+from sklearn.model_selection import train_test_split
+from matplotlib import pyplot as plt
+def sigmoid(z):
+    return (1/(1+np.exp(-z)))
+
+
+
+weight1=np.array(weightmat['Theta1'])
+weight2=np.array(weightmat['Theta2'])
+
+
+
+
+x=np.array(mat['X'], np.float32)
+y=np.array(mat['y'].reshape(5000,1), np.float32)
+for i in range(5000):
+    if y[i]==10:
+        y[i]=0
+x=np.append(np.ones((5000,1)),x,axis=1)
+
+
+
+z2=np.dot(x,weight1.T)
+z2=np.append(np.ones((5000,1)),z2,axis=1)
+
+
+
+
+a2=sigmoid(z2)
+a2.shape
+z3=np.dot(a2,weight2.T)
+a3=sigmoid(z3)
+
+
+
+
+
+for i in range(5000):
+  for j in range(10):
+       if a3[i][j]==np.amax(a3[i], axis=0):
+                 a3[i][j]=1
+       else:
+         a3[i][j]=0
+
+
+
+predictlabel=np.zeros((5000,1))
+for i in range(5000):
+    for j in range(10):
+        if a3[i][j]==1:
+            if j!=9:
+                predictlabel[i]=j+1
+            else: 
+                predictlabel[i]==0
+print(predictlabel)                
+
+
+
+
+
+difference=predictlabel-y
+count=0
+for i in range(5000):
+        if difference[i]==0:
+            count+=1
+print((count/5000)*100)            
+
+
+
+
+
